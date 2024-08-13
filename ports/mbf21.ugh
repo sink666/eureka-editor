@@ -21,3 +21,18 @@
 include "mbf"
 
 supported_games doom doom2
+
+#---- FEATURES ----------
+
+feature mbf21_blocking_lines
+
+#---- MBF21 LINE TYPES ----------
+
+line 1024 - "-- MBF21: Normal Scroll, apply to tag"   :tag
+line 1025 - "-- MBF21: Displacement Scroll, apply to tag"   :tag
+line 1025 - "-- MBF21: Accelerative Scroll, apply to tag"   :tag
+
+#---- MBF21 GENERALIZED SECTOR TYPES ----------
+
+sector 4096 "-- MBF21: Alternate damage mode"
+sector 8192 "-- MBF21: Kill grounded monsters"
