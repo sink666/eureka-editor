@@ -18,13 +18,13 @@
 #
 #------------------------------------------------------------------------
 
-include "mbf"
+include "boom"
 
 supported_games doom doom2
 
 #---- FEATURES ----------
 
-feature mbf21_blocking_lines 1
+feature mbf21_blocking_flags 1
 feature gen_sectors mbf21
 
 #---- MBF21 LINE TYPES ----------
