@@ -208,27 +208,31 @@ UI_SectorBox::UI_SectorBox(Instance &inst, int X, int Y, int W, int H, const cha
 
 	// generalized sector stuff
 
-	bm_title = new Fl_Box(FL_NO_BOX, X+10, Y, 100, 24, "Boom flags:");
-	bm_title->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
+	gen_title = new Fl_Box(FL_NO_BOX, X+10, Y, 100, 24, "Generalized Sector flags:");
+	gen_title->align(FL_ALIGN_INSIDE | FL_ALIGN_LEFT);
 
 	Y += 28;
 
-	bm_damage = new Fl_Choice(X+W - 95, Y, 80, 24, "Damage: ");
-	bm_damage->add("NONE|5 hp|10 hp|20 hp");
-	bm_damage->value(0);
-	bm_damage->callback(type_callback, this);
+	gen_damage = new Fl_Choice(X+W - 95, Y, 80, 24, "Damage: ");
 
-	bm_secret = new Fl_Check_Button(X+28, Y, 94, 20, "Secret");
-	bm_secret->labelsize(12);
-	bm_secret->callback(type_callback, this);
+	if(box->inst.conf.features.gen_sectors != GenSectorFamily::mbf21)
+		gen_damage->add("NONE|5 hp|10 hp|20 hp|kill player w/o radsuit|kill player|death exit (normal)|death exit (secret)");
+	else // assume Boom
+		gen_damage->add("NONE|5 hp|10 hp|20 hp")
+	gen_damage->value(0);
+	gen_damage->callback(type_callback, this);
 
-	bm_friction = new Fl_Check_Button(X+28, Y+20, 94, 20, "Friction");
-	bm_friction->labelsize(12);
-	bm_friction->callback(type_callback, this);
+	gen_secret = new Fl_Check_Button(X+28, Y, 94, 20, "Secret");
+	gen_secret->labelsize(12);
+	gen_secret->callback(type_callback, this);
 
-	bm_wind = new Fl_Check_Button(X+28, Y+40, 94, 20, "Wind");
-	bm_wind->labelsize(12);
-	bm_wind->callback(type_callback, this);
+	gen_friction = new Fl_Check_Button(X+28, Y+20, 94, 20, "Friction");
+	gen_friction->labelsize(12);
+	gen_friction->callback(type_callback, this);
+
+	gen_wind = new Fl_Check_Button(X+28, Y+40, 94, 20, "Wind");
+	gen_wind->labelsize(12);
+	gen_wind->callback(type_callback, this);
 
 	mFixUp.loadFields({ type, light, tag, ceil_h, floor_h, c_tex, f_tex, headroom });
 
@@ -443,25 +447,25 @@ void UI_SectorBox::type_callback(Fl_Widget *w, void *data)
 
 		mask = 0;
 
-		if (w == box->bm_damage)
+		if (w == box->gen_damage)
 		{
 			mask  = BoomSF_DamageMask;
-			value = box->bm_damage->value() << 5;
+			value = box->gen_damage->value() << 5;
 		}
-		else if (w == box->bm_secret)
+		else if (w == box->gen_secret)
 		{
 			mask  = BoomSF_Secret;
-			value = box->bm_secret->value() << 7;
+			value = box->gen_secret->value() << 7;
 		}
-		else if (w == box->bm_friction)
+		else if (w == box->gen_friction)
 		{
 			mask  = BoomSF_Friction;
-			value = box->bm_friction->value() << 8;
+			value = box->gen_friction->value() << 8;
 		}
-		else if (w == box->bm_wind)
+		else if (w == box->gen_wind)
 		{
 			mask  = BoomSF_Wind;
-			value = box->bm_wind->value() << 9;
+			value = box->gen_wind->value() << 9;
 		}
 
 		if (mask == 0)
@@ -719,10 +723,10 @@ void UI_SectorBox::UpdateField(int field)
 
 	if (field < 0 || field == Sector::F_TYPE)
 	{
-		bm_damage->value(0);
-		bm_secret->value(0);
-		bm_friction->value(0);
-		bm_wind->value(0);
+		gen_damage->value(0);
+		gen_secret->value(0);
+		gen_friction->value(0);
+		gen_wind->value(0);
 
 		if (inst.level.isSector(obj))
 		{
@@ -740,11 +744,11 @@ void UI_SectorBox::UpdateField(int field)
 				if (inst.conf.features.gen_sectors == GenSectorFamily::zdoom)
 					value >>= 3;
 
-				bm_damage->value((value >> 5) & 3);
-				bm_secret->value((value >> 7) & 1);
+				gen_damage->value((value >> 5) & 3);
+				gen_secret->value((value >> 7) & 1);
 
-				bm_friction->value((value >> 8) & 1);
-				bm_wind    ->value((value >> 9) & 1);
+				gen_friction->value((value >> 8) & 1);
+				gen_wind    ->value((value >> 9) & 1);
 			}
 		}
 		else
@@ -942,25 +946,27 @@ void UI_SectorBox::UpdateGameInfo(const LoadingData &loaded, const ConfigData &c
 	if (config.features.gen_sectors != GenSectorFamily::none)
 	{
 		if (config.features.gen_sectors == GenSectorFamily::zdoom)
-			bm_title->label("ZDoom flags:");
+			gen_title->label("ZDoom flags:");
+		else if(config.features.gen_sectors == GenSectorFamily::mbf21)
+			gen_title->label("MBF21 flags:");
 		else
-			bm_title->label("Boom flags:");
+			gen_title->label("Boom flags:");
 
-		bm_title->show();
+		gen_title->show();
 
-		bm_damage->show();
-		bm_secret->show();
-		bm_friction->show();
-		bm_wind->show();
+		gen_damage->show();
+		gen_secret->show();
+		gen_friction->show();
+		gen_wind->show();
 	}
 	else
 	{
-		bm_title->hide();
+		gen_title->hide();
 
-		bm_damage->hide();
-		bm_secret->hide();
-		bm_friction->hide();
-		bm_wind->hide();
+		gen_damage->hide();
+		gen_secret->hide();
+		gen_friction->hide();
+		gen_wind->hide();
 	}
 
 	UpdateField();

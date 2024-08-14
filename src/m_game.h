@@ -183,6 +183,7 @@ enum class GenSectorFamily : int
 {
 	none,	// not set
 	boom,	// original Boom generalized sectors
+	mbf21,
 	zdoom	// ZDoom shifted Boom generalized sectors
 };
 
@@ -201,7 +202,7 @@ struct port_features_t
 	// NOTE: values here are generally 0 or 1, but some can be higher
 
 	int gen_types;		// BOOM generalized linedef types
-	GenSectorFamily gen_sectors;	// BOOM and ZDoom sector flags (damage, secret, ...)
+	GenSectorFamily gen_sectors;	// BOOM, MBF21 and ZDoom sector flags (damage, secret, ...)
 
 	int tx_start;		// textures in TX_START .. TX_END
 	int img_png;		// PNG format for various graphics
@@ -211,6 +212,7 @@ struct port_features_t
 
 	int pass_through;	// Boom's MTF_PASSTHRU line flag
 	int midtex_3d;		// Eternity's ML_3DMIDTEX line flag
+	int mbf21_blocking_flags; // MBF21-specific blocking line flags
 	int strife_flags;	// Strife flags
 
 	int medusa_fixed;	// the Medusa Effect has been fixed (cannot occur)

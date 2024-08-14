@@ -325,6 +325,8 @@ static int GenSectorConvert(const char *text)
 		return static_cast<int>(GenSectorFamily::boom);
 	if(!y_stricmp(text, "zdoom"))
 		return static_cast<int>(GenSectorFamily::zdoom);
+	if(!y_stricmp(text, "mbf21"))
+		return static_cast<int>(GenSectorFamily::mbf21);
 	return static_cast<int>(GenSectorFamily::none);
 }
 

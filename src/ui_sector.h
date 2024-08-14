@@ -60,14 +60,15 @@ public:
 
 	Fl_Button * hd_buttons[HEADROOM_BUTTONS];
 
-	// Boom generalized sectors
+	// Generalized sectors
 
-	Fl_Box    * bm_title;
-	Fl_Choice * bm_damage;
+	Fl_Box    * gen_title;
+	Fl_Choice * gen_damage;
 
-	Fl_Check_Button * bm_secret;
-	Fl_Check_Button * bm_friction;
-	Fl_Check_Button * bm_wind;
+	Fl_Check_Button * gen_secret;
+	Fl_Check_Button * gen_friction;
+	Fl_Check_Button * gen_wind;
+	Fl_Check_Button * gen_kill_monsters;
 
 public:
 	UI_SectorBox(Instance &inst, int X, int Y, int W, int H, const char *label = NULL);
